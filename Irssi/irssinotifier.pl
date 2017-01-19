@@ -466,6 +466,18 @@ if (defined($ENV{STY})) {
     }
 }
 
+sub custom_msg {
+    my ($data, $server, $witem) = @_;
+    use Text::ParseWords; 
+    my ($nick, @message_words) = shellwords($data); 
+    
+    my $LastMsg = "@message_words";
+    my $LastNick = "$nick";
+    my $LastTarget = "!PRIVATE";
+    
+    send_to_api();
+}
+
 Irssi::settings_add_str('irssinotifier', 'irssinotifier_encryption_password', 'password');
 Irssi::settings_add_str('irssinotifier', 'irssinotifier_api_token', '');
 Irssi::settings_add_str('irssinotifier', 'irssinotifier_https_proxy', '');
@@ -494,3 +506,4 @@ Irssi::signal_add('message dcc action', 'dcc');
 Irssi::signal_add('print text',         'print_text');
 Irssi::signal_add('setup changed',      'are_settings_valid');
 Irssi::signal_add('window changed',     'check_window_activity');
+Irssi::command_bind custom_msg => \&custom_msg;
